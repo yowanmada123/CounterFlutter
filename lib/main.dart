@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:counter/controllers/set_state_page.dart';
 import 'package:counter/controllers/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,45 +36,59 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    log("BUILD");
     return Scaffold(
       appBar: AppBar(
         title: const Text("Counter With GetX"),
         centerTitle: true,
       ),
-      body: Column(
+      body: 
+      Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Obx(() => Text("NUMBER : ${mainC.number.value}"),), 
+          Obx(() {
+            log("Refresh Number");
+            return Text(
+              "NUMBER : ${mainC.number.value}",
+              style: const TextStyle(fontSize: 20),
+            );
+          }),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextButton(
-                child: const Text("Minus"),
-                onPressed: () {
-                  mainC.decrement();
-                },
-              ),
+              IconButton(
+                  onPressed: () {
+                    mainC.decrement();
+                  },
+                  icon: const Icon(Icons.remove)),
               const SizedBox(
                 width: 20,
               ),
-              TextButton(
-                child: const Text("Plus"),
-                onPressed: () {
-                  mainC.increment();
-                  
-                },
-              ),
+              IconButton(
+                  onPressed: () {
+                    mainC.increment();
+                  },
+                  icon: const Icon(Icons.add)),
             ],
+          ),
+          GestureDetector(
+            onTap: (() => Get.to(const SetStatePage())),
+            child: Container(
+                  width: 200,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.blue
+                  ),
+                  child: 
+                  const Center(child: Text("Counter Page With Set State", style: TextStyle(color: Colors.white),)),
+                ),
           )
+          
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            mainC.increment();
-          }),
     );
   }
 }
